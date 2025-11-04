@@ -1,0 +1,70 @@
+Week 4 Code and Output
+
+Code:
+
+from sympy import symbols, Not, Implies, Xor, And
+
+rained = symbols('rained')
+visited_hagrid = symbols('visited_hagrid')
+visited_dumbledore = symbols('visited_dumbledore')
+statement1 = Implies(Not(rained), visited_hagrid)
+statement2 = Xor(visited_hagrid, visited_dumbledore)
+statement3 = visited_dumbledore
+combined_formula = And(statement1, statement2, statement3)
+
+def check_combined_consistency():
+    possible_values = [True, False]
+    consistent_scenarios = []
+    for rained_value in possible_values:
+        for visited_hagrid_value in possible_values:
+            results = {rained: rained_value, visited_hagrid: visited_hagrid_value, visited_dumbledore: True}
+            eval_statement1 = statement1.subs(results)
+            eval_statement2 = statement2.subs(results)
+            eval_statement3 = statement3.subs(results)
+            eval_combined_formula = combined_formula.subs(results)
+            print(f"rained = {rained_value}, visited_hagrid = {visited_hagrid_value}, visited_dumbledore = True")
+            print(f"Statement 1 (¬R → H) evaluates to: {eval_statement1}")
+            print(f"Statement 2 (H ⊕ D) evaluates to: {eval_statement2}")
+            print(f"Statement 3 (D) evaluates to: {eval_statement3}")
+            print(f"Combined formula evaluates to: {eval_combined_formula}")
+            if eval_combined_formula:
+                consistent_scenarios.append((rained_value, visited_hagrid_value))
+    return consistent_scenarios
+
+consistent_scenarios = check_combined_consistency()
+print("Consistent scenarios based on combined formula:")
+if consistent_scenarios:
+    for scenario in consistent_scenarios:
+        rained_value, visited_hagrid_value = scenario
+        print(f"rained = {rained_value}, visited_hagrid = {visited_hagrid_value}, visited_dumbledore = True")
+else:
+    print("No consistent scenarios found")
+print("In combined logical formula:")
+print(combined_formula)
+        
+
+Output:
+rained = True, visited_hagrid = True, visited_dumbledore = True
+Statement 1 (¬R → H) evaluates to: True
+Statement 2 (H ⊕ D) evaluates to: False
+Statement 3 (D) evaluates to: True
+Combined formula evaluates to: False
+rained = True, visited_hagrid = False, visited_dumbledore = True
+Statement 1 (¬R → H) evaluates to: True
+Statement 2 (H ⊕ D) evaluates to: True
+Statement 3 (D) evaluates to: True
+Combined formula evaluates to: True
+rained = False, visited_hagrid = True, visited_dumbledore = True
+Statement 1 (¬R → H) evaluates to: True
+Statement 2 (H ⊕ D) evaluates to: False
+Statement 3 (D) evaluates to: True
+Combined formula evaluates to: False
+rained = False, visited_hagrid = False, visited_dumbledore = True
+Statement 1 (¬R → H) evaluates to: False
+Statement 2 (H ⊕ D) evaluates to: True
+Statement 3 (D) evaluates to: True
+Combined formula evaluates to: False
+Consistent scenarios based on combined formula:
+rained = True, visited_hagrid = False, visited_dumbledore = True
+In combined logical formula:
+visited_dumbledore & (visited_dumbledore ^ visited_hagrid) & (Implies(~rained, visited_hagrid))        
